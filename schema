@@ -1,0 +1,40 @@
+CREATE TABLE default.rawdata(    
+    `userID` UInt64,    
+    `date` Date,    
+    `time` DateTime,    
+    `title` String,
+    `author` String,
+    `language` String,
+    `url` String,
+    `referrer` String,
+    `time_on_page` UInt64,
+    `scroll_to_middle` Bool,
+    `scroll_to_end` Bool,
+    `device` String,
+    `user_agent` String,
+    `event` String
+    ) 
+ENGINE = ReplacingMergeTree ORDER BY (userID, date, event, url)
+
+CREATE TABLE rawdata_buffer as rawdata engine = Buffer(default, rawdata, 16, 1, 5, 10000, 1000000,10000000,100000000)
+
+CREATE TABLE default.rawdata_sum(    
+    `userID` UInt64,    
+    `date` Date,    
+    `time` DateTime,    
+    `title` String,
+    `author` String,
+    `language` String,
+    `url` String,
+    `referrer` String,
+    `time_on_page` UInt64,
+    `scroll_to_middle` Bool,
+    `scroll_to_end` Bool,
+    `device` String,
+    `user_agent` String,
+    `event` String,
+    `count` UInt64
+    ) 
+ENGINE = SummingMergeTree(count) ORDER BY (userID, date, event, url)
+
+CREATE TABLE rawdata_buffer_sum as rawdata_sum engine = Buffer(default, rawdata_sum, 16, 1, 5, 10000, 1000000,10000000,100000000)

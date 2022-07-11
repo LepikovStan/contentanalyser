@@ -1,0 +1,1 @@
+curl localhost:3001/upload -X POST -d '{"title": "title1", "author": "Big Author", "language": "ru", "url": "http://example.com", "referrer": "http://exe.com", "time_on_page": 123456, "scroll_to_middle": true, "scroll_to_end": false, "device": "mobile", "user_agent": "fff"}'
